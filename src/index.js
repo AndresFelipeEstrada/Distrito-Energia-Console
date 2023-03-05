@@ -1,13 +1,14 @@
-import { outro, intro, text, select, confirm } from '@clack/prompts'
+import { outro, intro, text, select, confirm, isCancel } from '@clack/prompts'
 import color from 'picocolors'
 
 import { statics } from './logic/statics.js'
 import { logicTable } from './logic/table.js'
+import { exitProgram } from './logic/cancelProgram.js'
 
 let continuar = true
 
 while (continuar) {
-  intro(color.italic(color.bgYellow('Bienvenido al software de distrito de energia')))
+  intro(color.italic(color.yellow('BIENVENIDO AL SOFTWARE DE DISTRITO DE ENERGIA')))
   intro(color.yellow('Por favor siga las siguientes instrucciones: '))
 
   const caudal = await text({
@@ -20,6 +21,8 @@ while (continuar) {
     }
   })
 
+  if (isCancel(caudal)) exitProgram()
+
   const tempEntrada = await text({
     message: color.cyan('Ingrese la temperatura de entrada en °C'),
     placeholder: 'Solo se permiten numeros',
@@ -29,6 +32,8 @@ while (continuar) {
       if (isNaN(value)) return color.red('Solo se permite ingresar numeros')
     }
   })
+
+  if (isCancel(tempEntrada)) exitProgram()
 
   const tempSalida = await text({
     message: color.cyan('Ingrese la temperatura de salida °C'),
@@ -40,6 +45,8 @@ while (continuar) {
     }
   })
 
+  if (isCancel(tempSalida)) exitProgram()
+
   const servicio = await text({
     message: color.cyan('Ingrese un valor al factor de servicio'),
     placeholder: 'El valor debe estar entre 1 y 3',
@@ -48,6 +55,8 @@ while (continuar) {
       if (isNaN(value)) return color.red('Solo se permite ingresar numeros')
     }
   })
+
+  if (isCancel(servicio)) exitProgram()
 
   const chillerCentrifugo = await select({
     message: color.cyan('Selecciona una opcion para el Chiller Centrifugo '),
@@ -58,6 +67,8 @@ while (continuar) {
     ]
   })
 
+  if (isCancel(chillerCentrifugo)) exitProgram()
+
   const chillerCentrifugoCantidad = await text({
     message: color.cyan('Ingrese la cantidad para el Chiller Centrifugo'),
     placeholder: 'Solo se permiten numeros enteros',
@@ -66,6 +77,8 @@ while (continuar) {
       if (value % 1 !== 0) return color.red('Solo se permiten numeros enteros')
     }
   })
+
+  if (isCancel(chillerCentrifugoCantidad)) exitProgram()
 
   const chillerAbsorcion = await select({
     message: color.cyan('Selecciona una opcion para el Chiller Centrifugo '),
@@ -76,6 +89,8 @@ while (continuar) {
     ]
   })
 
+  if (isCancel(chillerAbsorcion)) exitProgram()
+
   const chillerAbsorcionCantidad = await text({
     message: color.cyan('Ingrese la cantidad para el Chiller Centrifugo'),
     placeholder: 'Solo se permiten numeros enteros',
@@ -85,6 +100,8 @@ while (continuar) {
     }
   })
 
+  if (isCancel(chillerAbsorcionCantidad)) exitProgram()
+
   const total = caudal * (tempEntrada - tempSalida) * servicio * statics.global1 * statics.global2
 
   outro(color.green(`El total es: ${Math.floor(total)}`))
@@ -92,10 +109,13 @@ while (continuar) {
   logicTable({ caudal, tempEntrada, tempSalida, servicio, chillerCentrifugo, chillerCentrifugoCantidad, chillerAbsorcion, chillerAbsorcionCantidad })
 
   continuar = await confirm({
-    message: 'Desea ejecutar el programa de nuevo?'
+    message: 'Desea ejecutar el programa de nuevo?',
+    initialValue: false
   })
 
+  if (isCancel(continuar)) exitProgram()
+
   if (continuar === false) {
-    outro(color.italic(color.bgYellow('Gracias por usar el software')))
+    outro(color.italic(color.yellow('GRACIAS POR USAR EL SOFTWARE!!!')))
   }
 }

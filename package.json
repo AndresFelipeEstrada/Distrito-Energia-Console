@@ -5,13 +5,14 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev" : "/src/index.js"
+    "dev": "/src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@clack/prompts": "0.6.1",
+    "exceljs": "^4.3.0",
     "picocolors": "1.0.0",
     "table": "^6.8.1"
   },
