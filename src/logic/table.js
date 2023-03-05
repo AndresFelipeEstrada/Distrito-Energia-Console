@@ -1,7 +1,10 @@
+import { confirm } from '@clack/prompts'
 import { table } from 'table'
-import { exportData } from './createExcel'
+import color from 'picocolors'
 
-export const logicTable = ({ caudal, tempEntrada, tempSalida }) => {
+import createExcel from './createExcel.js'
+
+export const logicTable = async ({ caudal, tempEntrada, tempSalida }) => {
   const dataCentrifugo = [
 
     ['Energia', 'Emisiones', 'Capex', 'Opex'],
@@ -28,5 +31,12 @@ export const logicTable = ({ caudal, tempEntrada, tempSalida }) => {
   console.log('Tabla Absorcion: ')
   console.log(table(dataAbsorcion))
 
-  exportData({ dataCentrifugo, dataAbsorcion })
+  const crearExcel = await confirm({
+    message: color.cyan('Desea crear un informe Excel? '),
+    initialValue: false
+  })
+
+  if (crearExcel === true) {
+    return await createExcel({ dataCentrifugo, dataAbsorcion })
+  }
 }

@@ -1,8 +1,9 @@
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 import exceljs from 'exceljs'
+import color from 'picocolors'
 
-export const exportData = async ({ dataCentrifugo, dataAbsorcion }) => {
+const createExcel = async ({ dataCentrifugo, dataAbsorcion }) => {
   const nuevaArchivo = new exceljs.Workbook() // crea nuevo archivo de excel
   const nuevaHoja = nuevaArchivo.addWorksheet('distritos-termicos') // crea nueva hoja dentro del archivo excel
 
@@ -49,13 +50,18 @@ export const exportData = async ({ dataCentrifugo, dataAbsorcion }) => {
   const yyyy = today.getFullYear()
   const mm = today.getMonth() + 1
   const dd = today.getDate()
+  const hour = today.getHours()
+  const minutes = today.getMinutes()
 
   try {
-    await nuevaArchivo.xlsx.writeFile(`${ruta}/${dd}-${mm}-${yyyy}.xlsx`)
+    await nuevaArchivo.xlsx.writeFile(`${ruta}/${dd}-${mm}-${yyyy}-${hour}-${minutes}.xlsx`)
       .then(() => {
-        console.log('excel creado con exito')
+        console.log(color.yellow('---excel creado con exito---'))
+        console.log(' ')
       })
   } catch (error) {
-    console.log(error)
+    console.log(color.red(error))
   }
 }
+
+export default createExcel
