@@ -1,8 +1,7 @@
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
-import exceljs from 'exceljs'
-
 import { table } from 'table'
+import exceljs from 'exceljs'
 
 export const logicTable = ({ caudal, tempEntrada, tempSalida, servicio, chillerCentrifugo, chillerCentrifugoCantidad, chillerAbsorcion, chillerAbsorcionCantidad }) => {
   const dataCentrifugo = [
@@ -41,11 +40,13 @@ export const logicTable = ({ caudal, tempEntrada, tempSalida, servicio, chillerC
     // Looping through User data
 
     dataCentrifugo.forEach((data) => {
-      nuevaHoja.addRow(data) // Add data in worksheet
+      nuevaHoja.addRow(data) // Agregar data tabla centrifugo
     })
 
+    nuevaHoja.addRow(' ')
+
     dataAbsorcion.forEach((data) => {
-      nuevaHoja.addRow(data)
+      nuevaHoja.addRow(data) // Agregar data tabla absorcion
     })
 
     nuevaHoja.getCell('A1').font = {
@@ -61,8 +62,23 @@ export const logicTable = ({ caudal, tempEntrada, tempSalida, servicio, chillerC
       bold: true
     }
 
+    nuevaHoja.getCell('A9').font = {
+      bold: true
+    }
+    nuevaHoja.getCell('B9').font = {
+      bold: true
+    }
+    nuevaHoja.getCell('C9').font = {
+      bold: true
+    }
+    nuevaHoja.getCell('D9').font = {
+      bold: true
+    }
+
+    const name = Date.now()
+
     try {
-      const data = await nuevaArchivo.xlsx.writeFile(`${ruta}/tabla.xlsx`)
+      const data = await nuevaArchivo.xlsx.writeFile(`${ruta}/${name.toString()}.xlsx`)
         .then(() => {
           console.log('excel creado con exito')
         })

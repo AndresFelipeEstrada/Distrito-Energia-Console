@@ -5,9 +5,9 @@ import { statics } from './logic/statics.js'
 import { logicTable } from './logic/table.js'
 import { exitProgram } from './logic/cancelProgram.js'
 
-let continuar = true
+let repetir = true
 
-while (continuar) {
+while (repetir) {
   intro(color.italic(color.yellow('BIENVENIDO AL SOFTWARE DE DISTRITO DE ENERGIA')))
   intro(color.yellow('Por favor siga las siguientes instrucciones: '))
 
@@ -108,14 +108,14 @@ while (continuar) {
 
   logicTable({ caudal, tempEntrada, tempSalida, servicio, chillerCentrifugo, chillerCentrifugoCantidad, chillerAbsorcion, chillerAbsorcionCantidad })
 
-  continuar = await confirm({
+  const continuar = await confirm({
     message: 'Desea ejecutar el programa de nuevo?',
     initialValue: false
   })
 
-  if (isCancel(continuar)) exitProgram()
-
   if (continuar === false) {
     outro(color.italic(color.yellow('GRACIAS POR USAR EL SOFTWARE!!!')))
   }
+
+  repetir = continuar
 }
