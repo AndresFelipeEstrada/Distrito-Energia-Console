@@ -102,11 +102,28 @@ do {
 
   if (isCancel(chillerAbsorcionCantidad)) exitProgram()
 
-  const total = caudal * (tempEntrada - tempSalida) * servicio * statics.global1 * statics.global2
+  const tamanioDT = caudal * (tempEntrada - tempSalida) * servicio * statics.global1 * statics.global2
 
-  outro(color.green(`El total es: ${Math.floor(total)}`))
+  outro(color.green(`El total es: ${Math.floor(tamanioDT)}`))
 
-  await logicTable({ caudal, tempEntrada, tempSalida })
+  const parametro1 = chillerCentrifugo * chillerCentrifugoCantidad
+  const parametro2 = chillerAbsorcion * chillerAbsorcionCantidad
+  const totalChillers = parametro1 + parametro2
+  const tmax = tamanioDT + (tamanioDT * 0.5)
+
+  if (totalChillers <= tamanioDT) {
+    outro(color.red('El total suministrad esta por debajo del Tamaño del DT'))
+    console.log(' ')
+    exitProgram()
+  }
+
+  if (totalChillers >= tmax) {
+    outro(color.red('El total suministrado excede el Tamaño del DT '))
+    console.log(' ')
+    exitProgram()
+  }
+
+  await logicTable({ parametro1, parametro2 })
 
   continuar = await confirm({
     message: color.cyan('Desea ejecutar el programa de nuevo?'),

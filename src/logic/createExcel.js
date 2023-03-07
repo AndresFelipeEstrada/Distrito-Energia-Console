@@ -3,6 +3,8 @@ import { dirname } from 'path'
 import exceljs from 'exceljs'
 import color from 'picocolors'
 
+import editExcel from './editExcel.js'
+
 const createExcel = async ({ dataCentrifugo, dataAbsorcion }) => {
   const nuevaArchivo = new exceljs.Workbook() // crea nuevo archivo de excel
   const nuevaHoja = nuevaArchivo.addWorksheet('distritos-termicos') // crea nueva hoja dentro del archivo excel
@@ -20,31 +22,7 @@ const createExcel = async ({ dataCentrifugo, dataAbsorcion }) => {
     nuevaHoja.addRow(data) // Agregar data tabla absorcion
   })
 
-  nuevaHoja.getCell('A1').font = {
-    bold: true
-  }
-  nuevaHoja.getCell('B1').font = {
-    bold: true
-  }
-  nuevaHoja.getCell('C1').font = {
-    bold: true
-  }
-  nuevaHoja.getCell('D1').font = {
-    bold: true
-  }
-
-  nuevaHoja.getCell('A9').font = {
-    bold: true
-  }
-  nuevaHoja.getCell('B9').font = {
-    bold: true
-  }
-  nuevaHoja.getCell('C9').font = {
-    bold: true
-  }
-  nuevaHoja.getCell('D9').font = {
-    bold: true
-  }
+  editExcel({ nuevaHoja })
 
   const today = new Date()
   const yyyy = today.getFullYear()
@@ -56,6 +34,7 @@ const createExcel = async ({ dataCentrifugo, dataAbsorcion }) => {
   try {
     await nuevaArchivo.xlsx.writeFile(`${ruta}/${dd}-${mm}-${yyyy}-${hour}-${minutes}.xlsx`)
       .then(() => {
+        console.log(' ')
         console.log(color.yellow('---excel creado con exito---'))
         console.log(' ')
       })
