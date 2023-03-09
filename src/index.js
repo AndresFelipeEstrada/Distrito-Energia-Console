@@ -104,7 +104,7 @@ do {
 
   const tamanioDT = caudal * (tempEntrada - tempSalida) * servicio * statics.global1 * statics.global2
 
-  outro(color.green(`El total es: ${Math.floor(tamanioDT)}`))
+  outro(color.white(`El total es: ${Math.floor(tamanioDT)}`))
 
   const parametro1 = chillerCentrifugo * chillerCentrifugoCantidad
   const parametro2 = chillerAbsorcion * chillerAbsorcionCantidad
