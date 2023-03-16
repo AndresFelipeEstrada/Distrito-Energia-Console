@@ -33,7 +33,7 @@ export const logicTable = async ({ parametro1, parametro2 }) => {
   const gasOpexAbsorcion = Math.floor(gasCapexAbsorcion * 0.03)
 
   const solarCapexAbsorcion = Math.floor(parametro2 * 0.0035174111853)
-  // const ft=(capex*1000000)*1.015
+  const ftAbsorcion = (solarCapexAbsorcion * 1000000) * 1.015
   const bioAbsorcion = Math.floor(solarCapexAbsorcion * 2000000)
 
   // Tabla Absorcion
